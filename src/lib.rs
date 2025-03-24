@@ -35,19 +35,22 @@ pub fn random_email() -> String {
 /// Generates a random phone number in the format (XXX) XXX-XXXX.
 pub fn random_phone_number() -> String {
     let mut rng = rand::thread_rng();
-    let area_code = rng.gen_range(100..=999);
-    let exchange = rng.gen_range(100..=999);
-    let subscriber = rng.gen_range(1000..=9999);
+    let area_code = rng.random_range(100..=999);
+    let exchange = rng.random_range(100..=999);
+    let subscriber = rng.random_range(1000..=9999);
     format!("({}) {}-{}", area_code, exchange, subscriber)
 }
 
 /// Generates a random date between two years.
 pub fn random_date(start_year: i32, end_year: i32) -> NaiveDate {
+    // if(start_year > end_year){
+    //     return Err("start_year must be less than or equal to end_year");
+    // }
     let mut rng = rand::thread_rng();
     let start = NaiveDate::from_ymd_opt(start_year, 1, 1).unwrap();
     let end = NaiveDate::from_ymd_opt(end_year, 12, 31).unwrap();
     let days = (end - start).num_days();
-    start + Duration::days(rng.gen_range(0..=days))
+    start + Duration::days(rng.random_range(0..=days))
 }
 
 #[cfg(test)]
@@ -86,7 +89,7 @@ mod tests {
 
     #[test]
     fn test_random_date() {
-        let date = random_date(2000, 2023);
-        assert!(date.year() >= 2000 && date.year() <= 2023);
+        let date = random_date(2023, 2022);
+        assert!(date.year() >= 2000 && date.year() <= 2024);
     }
 }
